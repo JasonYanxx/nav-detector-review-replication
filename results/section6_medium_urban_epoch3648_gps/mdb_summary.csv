@@ -1,0 +1,6 @@
+detector,statistic_form,selected_measurement_k,direction_or_rule,S_kk,threshold,false_alarm_policy,theoretical_worst_case_workflow_MDB_sigma,theoretical_MDB_at_selected_k_sigma
+Chi-squared/parity space,$T_R=\mathbf{r}^T\mathbf{r}=\mathbf{p}^T\mathbf{p}$,3,global,0.6015522080370841,11.070497693516351,alpha=0.05,7.860099429463056,5.734267599414994
+Baarda w-test,$\max_k w_k^2$,3,max over k with local threshold,0.6015522080370841,3.8414588206941205,alpha0=0.05,6.370840054479388,4.6477912949190285
+Jackknife maximum,$\max_k \tilde{J}_k^2$,3,max over k,0.6015522080370841,7.689092506094184,tau=0.05,7.807590133195138,5.695959896190713
+Solution separation H/V split,"$\{T_{SS,k,q}: k=1,\ldots,n,\ q=1,2,3\}$",3,all-k ENU aggregate,0.6015522080370841,hor/ver,"tau_hor=0.025, tau_ver=0.025",8.193562093415773,5.977542403592554
+Solution separation max-sensitivity,"$\max_k T_{SS,k,q(k)}$",3,per-k max-sensitivity component,0.6015522080370841,7.689092506094184,tau=0.05 over selected scalar monitors,7.807590133195128,5.695959896190718

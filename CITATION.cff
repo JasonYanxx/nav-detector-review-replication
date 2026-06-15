@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the accompanying paper. Update this file after the paper metadata is finalized."
+title: "GNSS/RAIM Snapshot Detector Review: Replication Package"
+authors:
+  - family-names: "Yan"
+    given-names: "Penggao"
+date-released: 2026-06-15
+repository-code: "https://github.com/TO-BE-UPDATED/TO-BE-UPDATED"
+license: "NOASSERTION"
+

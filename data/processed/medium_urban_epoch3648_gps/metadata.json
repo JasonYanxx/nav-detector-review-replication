@@ -1,0 +1,41 @@
+{
+  "source": "Imported from N22_logistic_MLE controlled scale-mismatch experiment.",
+  "source_mat": "not included in this release package",
+  "receiver_truth_source_json": "not included in this release package",
+  "epoch_index": 3648,
+  "gps_week": 2203,
+  "tow_seconds": 21358,
+  "constellations": [
+    "GPS"
+  ],
+  "measurement_count": 9,
+  "state_dimension": 4,
+  "rank": 4,
+  "redundancy": 5,
+  "design_matrix_coordinate_frame": "local_enu_plus_constellation_clock",
+  "whitened_matrix_note": "For the first validation protocol, the synthetic covariance is the identity, so H equals G.",
+  "state_columns": [
+    "east_m",
+    "north_m",
+    "up_m",
+    "clock_GPS_m"
+  ],
+  "receiver_position_llh_deg_m": [
+    22.294614,
+    114.173417,
+    3.0
+  ],
+  "receiver_position_ecef_m": [
+    -2417764.4338598903,
+    5386452.350410128,
+    2404630.255281007
+  ],
+  "notes": [
+    "Only geometry is reused in this project.",
+    "Logistic errors, LQLC estimation, and scale-mismatch results are not reused.",
+    "Section 6 should generate synthetic Gaussian noise and single-measurement biases from this geometry."
+  ],
+  "normal_matrix_condition_number": 16.437231908273432,
+  "residual_projector_diag_min": 0.3201644870421988,
+  "residual_projector_diag_max": 0.6993476557140683
+}
