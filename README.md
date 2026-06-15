@@ -33,19 +33,13 @@ data/processed/medium_urban_epoch3648_gps/
   metadata.json
 
 experiments/manifests/
-  section6_medium_urban_epoch3648_gps.json
+  section6_medium_urban_epoch3648_gps.json  # generated after running the script
 
 results/section6_medium_urban_epoch3648_gps/
-  detection_probability.csv
-  geometry_summary.json
-  mdb_summary.csv
-  sanity_summary.csv
-  theoretical_mdb_by_measurement.csv
-  type_tradeoff.csv
+  *.csv, *.json  # generated after running the script
 
 figures/
-  section6_detection_probability.pdf
-  section6_type_tradeoff_*.pdf
+  section6_*.pdf  # generated after running the script
 
 docs/
   data_provenance.md

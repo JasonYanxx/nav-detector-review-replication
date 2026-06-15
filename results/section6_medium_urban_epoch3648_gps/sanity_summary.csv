@@ -1,8 +1,0 @@
-check_type,detector_statistic,threshold_rule,nominal_level,threshold,empirical_false_alarm,relationship_residual,trials
-threshold,Chi-squared/parity space,"chi2(q, 1-alpha)",0.05,11.070497693516351,0.0502,,10000
-threshold,Baarda w-test,"max_k w_k^2 > chi2(1, 1-alpha0)",0.05,3.8414588206941205,0.3025,,10000
-threshold,Jackknife maximum,"chi2(1, 1-tau/n)",0.05,7.689092506094184,0.0455,,10000
-threshold,Solution separation H/V split,horizontal/vertical Bonferroni,0.05,,0.0239,,10000
-threshold,Solution separation max-sensitivity,"per-k selected component, chi2(1, 1-tau/n)",0.05,7.689092506094184,0.0455,,10000
-identity,Residual vs parity,,,,,1.4210854715202004e-14,10000
-identity,Baarda w vs standardized jackknife,,,,,3.552713678800501e-15,10000
