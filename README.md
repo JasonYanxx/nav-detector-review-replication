@@ -79,6 +79,23 @@ python src/validation/simulate_snapshot_validation.py
 
 The script writes regenerated numerical outputs to `results/section6_medium_urban_epoch3648_gps/`, regenerated figures to `figures/`, and an updated manifest to `experiments/manifests/section6_medium_urban_epoch3648_gps.json`.
 
+## Where To Find The Paper Tables And Figures
+
+After running `bash replication/reproduce_section6.sh`, use the following mapping to inspect the reproduced paper artifacts.
+
+| Paper artifact | What it reports | Generated file to inspect |
+|---|---|---|
+| Table 3: Geometry summary | Satellite-geometry size, rank, condition number, and residual-projector diagonal range | `results/section6_medium_urban_epoch3648_gps/geometry_summary.json` |
+| Table 4: Detector statistics, false-alarm policy, and theoretical MDB values | The detector workflow, thresholds, MDB at $k=3$, and worst-case workflow MDB | `results/section6_medium_urban_epoch3648_gps/mdb_summary.csv` |
+| Figure 2: Detection probability versus bias magnitude | Empirical detection probability curves for the evaluated detector workflows | `figures/section6_detection_probability.pdf`; source data in `results/section6_medium_urban_epoch3648_gps/detection_probability.csv` |
+| Figure 3: Type I / Type II error tradeoff | Type I and Type II error curves under varying false-alarm budgets | `figures/section6_type_tradeoff_*.pdf`; source data in `results/section6_medium_urban_epoch3648_gps/type_tradeoff.csv` |
+
+Additional diagnostic outputs:
+
+- `results/section6_medium_urban_epoch3648_gps/sanity_summary.csv`: threshold false-alarm checks and detector-identity residuals.
+- `results/section6_medium_urban_epoch3648_gps/theoretical_mdb_by_measurement.csv`: per-measurement theoretical MDB values used to compute the worst-case MDB column in Table 4.
+- `experiments/manifests/section6_medium_urban_epoch3648_gps.json`: seed, trial count, bias grid, false-alarm settings, selected measurement, and output paths.
+
 ## Reproducibility Notes
 
 The default run uses:
@@ -105,4 +122,3 @@ Only the satellite/receiver geometry is reused from the source GNSS processing c
 ## Citation
 
 If you use this code, please cite the accompanying paper. A formal citation entry should be added after the paper metadata is finalized.
-
