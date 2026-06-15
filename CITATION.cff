@@ -5,6 +5,5 @@ authors:
   - family-names: "Yan"
     given-names: "Penggao"
 date-released: 2026-06-15
-repository-code: "https://github.com/TO-BE-UPDATED/TO-BE-UPDATED"
-license: "NOASSERTION"
-
+repository-code: "https://github.com/JasonYanxx/nav-detector-review-replication"
+license: "MIT"
