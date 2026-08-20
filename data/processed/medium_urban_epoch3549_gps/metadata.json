@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "epoch_index": 3549,
+  "gps_week": 2203,
+  "tow_seconds": 21259,
+  "configuration": "gps",
+  "constellation": "GPS",
+  "satellite_ids": [1, 4, 7, 8, 9, 14, 16, 17, 21, 27, 30],
+  "n": 11,
+  "m": 4,
+  "q": 7,
+  "rank": 4,
+  "hdop": 0.7611358346839352,
+  "vdop": 0.989710866418851,
+  "pdop": 1.248541292047469,
+  "condition_number_hth": 16.901106839023527,
+  "min_S_kk": 0.5282663756310746,
+  "max_S_kk": 0.7497720534152452,
+  "geometry_csv_sha256": "3ece0cf088504fb0655a148c5c4f7d36a8871cce2f5bc991f9a3467adda8fda4",
+  "geometry_npz_sha256": "8818cdb567f91ff87d60309d2aa440b5b66cfc542dfcfb77ef6739dbb8a7f260",
+  "selection_rule": "published good-geometry GPS-only epoch; median S_kk direction selected after geometry freeze",
+  "source_policy": "sanitized processed geometry only; no raw observation or selection-audit material"
+}

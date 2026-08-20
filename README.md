@@ -1,14 +1,14 @@
 # GNSS/RAIM Snapshot Detector Review: Replication Package
 
-This repository contains the code and processed data needed to reproduce the illustrative validation results used in the paper:
+This repository contains the public code and sanitized processed geometry for the published epoch-3549 GPS validation accompanying the paper:
 
 > A Tutorial Review Of Statistical Snapshot Detectors for GNSS/RAIM Fault Detection: Unified Derivations and Detector Relationships
 
-The package is intentionally limited to the paper-supporting Section 6 validation workflow. It is not a full GNSS processing library and it does not include the manuscript drafting repository, raw source project files, or internal research notes.
+The package is intentionally limited to the main GPS-only validation workflow. It is not a full GNSS processing library and it does not include the manuscript drafting repository, raw source project files, or internal research notes. The default run reproduces the published epoch 3549 Tables 5–8 / Figures 3–5 evidence. The earlier epoch-3648 pilot remains available with `--legacy-epoch3648`.
 
-## What This Repository Reproduces
+## What This Repository Provides
 
-The script `src/validation/simulate_snapshot_validation.py` reproduces the pilot validation run `section6_medium_urban_epoch3648_gps`.
+The script `src/validation/simulate_snapshot_validation.py` runs the published GPS case `published_epoch3549_gps` by default.
 
 It generates:
 
@@ -16,7 +16,7 @@ It generates:
 - detection probability curves under synthetic Gaussian noise and a synthetic single-measurement bias;
 - theoretical minimum detectable bias (MDB) summaries;
 - type I / type II error tradeoff data;
-- the PDF figures used by the manuscript validation section.
+- PDF figures generated for the published workflow.
 
 The validation uses a real GPS-only satellite geometry from one medium-urban epoch and generates all measurement noise and fault biases synthetically.
 
@@ -27,16 +27,18 @@ src/validation/
   detectors.py
   simulate_snapshot_validation.py
 
-data/processed/medium_urban_epoch3648_gps/
+data/processed/medium_urban_epoch3549_gps/
   geometry.csv
   geometry_matrix.npz
   metadata.json
 
-experiments/manifests/
-  section6_medium_urban_epoch3648_gps.json  # generated after running the script
-
-results/section6_medium_urban_epoch3648_gps/
-  *.csv, *.json  # generated after running the script
+results/published_epoch3549_gps/
+  geometry_summary.json
+  matched_local_mdb_by_measurement.csv
+  main_epoch3549_local_detection_probability.csv
+  main_epoch3549_workflow_detection_probability.csv
+  main_epoch3549_type_tradeoff.csv
+  run_summary.json  # generated after running the script
 
 figures/
   section6_*.pdf  # generated after running the script
@@ -71,24 +73,30 @@ Alternatively, run the Python script directly from the repository root:
 python src/validation/simulate_snapshot_validation.py
 ```
 
-The script writes regenerated numerical outputs to `results/section6_medium_urban_epoch3648_gps/`, regenerated figures to `figures/`, and an updated manifest to `experiments/manifests/section6_medium_urban_epoch3648_gps.json`.
+The script writes regenerated numerical outputs to `results/published_epoch3549_gps/` and regenerated Figures 3–5 to `figures/`. Use `python src/validation/simulate_snapshot_validation.py --legacy-epoch3648` to rerun the retained pilot.
 
-## Where To Find The Paper Tables And Figures
+## Published Outputs
 
-After running `bash replication/reproduce_section6.sh`, use the following mapping to inspect the reproduced paper artifacts.
+After running `bash replication/reproduce_section6.sh`, use the following mapping to inspect the generated published outputs.
 
-| Paper artifact | What it reports | Generated file to inspect |
+| Published output | What it reports | Generated file to inspect |
 |---|---|---|
-| Table 3: Geometry summary | Satellite-geometry size, rank, condition number, and residual-projector diagonal range | `results/section6_medium_urban_epoch3648_gps/geometry_summary.json` |
-| Table 4: Detector statistics, false-alarm policy, and theoretical MDB values | The detector workflow, thresholds, MDB at $k=3$, and worst-case workflow MDB | `results/section6_medium_urban_epoch3648_gps/mdb_summary.csv` |
-| Figure 2: Detection probability versus bias magnitude | Empirical detection probability curves for the evaluated detector workflows | `figures/section6_detection_probability.pdf`; source data in `results/section6_medium_urban_epoch3648_gps/detection_probability.csv` |
-| Figure 3: Type I / Type II error tradeoff | Type I and Type II error curves under varying false-alarm budgets | `figures/section6_type_tradeoff_*.pdf`; source data in `results/section6_medium_urban_epoch3648_gps/type_tradeoff.csv` |
+| Geometry summary | Satellite-geometry size, rank, condition number, and selected G09 direction | `results/published_epoch3549_gps/geometry_summary.json` |
+| Matched-local MDB and identity audit | Matched local-test MDB values and squared-statistic identity residuals | `results/published_epoch3549_gps/matched_local_mdb_by_measurement.csv` |
+| Matched-local empirical power (Figure 3) | Baarda, standardized Jackknife, normalized solution-separation, and theoretical local detection probability | `figures/section6_baarda_local_detection_probability.pdf`; source data in `results/published_epoch3549_gps/main_epoch3549_local_detection_probability.csv` |
+| Workflow detection probability (Table 7 / Figure 4) | Published workflow thresholds and direction-conditioned detection probabilities | `figures/section6_detection_probability.pdf`; source data in `results/published_epoch3549_gps/main_epoch3549_workflow_detection_probability.csv` |
+| Type I / Type II error tradeoff (Table 8 / Figure 5) | Type I and Type II error curves under varying family-wise false-alarm budgets | `figures/section6_type_tradeoff_*.pdf`; source data in `results/published_epoch3549_gps/main_epoch3549_type_tradeoff.csv` |
+| Run summary and provenance | Seed, geometry identity, output inventory, and nominal tradeoff values | `results/published_epoch3549_gps/run_summary.json` |
 
 Additional diagnostic outputs:
 
-- `results/section6_medium_urban_epoch3648_gps/sanity_summary.csv`: threshold false-alarm checks and detector-identity residuals.
-- `results/section6_medium_urban_epoch3648_gps/theoretical_mdb_by_measurement.csv`: per-measurement theoretical MDB values used to compute the worst-case MDB column in Table 4.
-- `experiments/manifests/section6_medium_urban_epoch3648_gps.json`: seed, trial count, bias grid, false-alarm settings, selected measurement, and output paths.
+The default run intentionally keeps the public output surface small: the
+matched-local CSV contains all 11 directions, while the three main CSV files
+contain the selected G09 direction and the frozen 21-point or 40-point grids.
+The epoch-3648 files and their historical names are legacy-only outputs from
+`--legacy-epoch3648` and are not the published Table 5–8 evidence. Legacy
+figures are isolated under `figures/legacy_epoch3648/` so they cannot replace
+the published PDFs in `figures/`.
 
 ## Reproducibility Notes
 
@@ -98,9 +106,9 @@ The default run uses:
 - Monte Carlo trials: `10000`;
 - bias grid: `0` to `10` in `0.5` whitened-sigma increments;
 - false alarm settings: `alpha=0.05`, `alpha0=0.05`, `tau=0.05`;
-- geometry: `data/processed/medium_urban_epoch3648_gps/geometry_matrix.npz`.
+- geometry: `data/processed/medium_urban_epoch3549_gps/geometry_matrix.npz`.
 
-The output files included in this repository were generated with these settings. Small numerical differences may occur across Python, NumPy, SciPy, or Matplotlib versions.
+The output files are generated locally by the reproduction script and are intentionally not committed to this repository. Small numerical differences may occur across Python, NumPy, SciPy, or Matplotlib versions.
 
 ## Scope Limitations
 
@@ -115,4 +123,6 @@ Only the satellite/receiver geometry is reused from the source GNSS processing c
 
 ## Citation
 
-If you use this code, please cite the accompanying paper. A formal citation entry should be added after the paper metadata is finalized.
+If you use this code, please cite the accompanying paper:
+
+Yan, P., Song, B., Li, Y., & Hsu, L.-T. (2026). *A Tutorial Review of Statistical Snapshot Detectors for GNSS/RAIM Fault Detection: Unified Derivations and Detector Relationships*. **Sensors, 26**(15), 4938. https://doi.org/10.3390/s26154938

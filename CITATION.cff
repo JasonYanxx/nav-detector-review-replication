@@ -1,9 +1,27 @@
 cff-version: 1.2.0
-message: "If you use this code, please cite the accompanying paper. Update this file after the paper metadata is finalized."
+message: "If you use this code, please cite the accompanying paper."
 title: "GNSS/RAIM Snapshot Detector Review: Replication Package"
 authors:
   - family-names: "Yan"
     given-names: "Penggao"
-date-released: 2026-06-15
+date-released: "2026-06-15"
 repository-code: "https://github.com/JasonYanxx/nav-detector-review-replication"
 license: "MIT"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Yan"
+      given-names: "Penggao"
+    - family-names: "Song"
+      given-names: "Baoshan"
+    - family-names: "Li"
+      given-names: "Yuan"
+    - family-names: "Hsu"
+      given-names: "Li-Ta"
+  title: "A Tutorial Review of Statistical Snapshot Detectors for GNSS/RAIM Fault Detection: Unified Derivations and Detector Relationships"
+  journal: "Sensors"
+  year: 2026
+  volume: 26
+  issue: 15
+  number: 4938
+  doi: "10.3390/s26154938"

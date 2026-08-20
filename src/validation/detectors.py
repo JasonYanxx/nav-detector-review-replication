@@ -10,6 +10,21 @@ from __future__ import annotations
 import numpy as np
 
 
+def finite_matmul(left: np.ndarray, right: np.ndarray, label: str) -> np.ndarray:
+    """Multiply arrays while converting any non-finite result into a hard failure.
+
+    NumPy linked against the macOS Accelerate backend can report stale floating-
+    point flags for otherwise finite matrix products. The local ``errstate``
+    suppresses those backend false positives; the explicit finite check still
+    rejects a genuine overflow or invalid detector result.
+    """
+    with np.errstate(divide="ignore", over="ignore", invalid="ignore"):
+        result = left @ right
+    if not np.isfinite(result).all():
+        raise FloatingPointError(f"Non-finite matrix product in {label}")
+    return result
+
+
 def projection_matrices(H: np.ndarray) -> dict[str, np.ndarray]:
     """Return common least-squares matrices used for setup and audits."""
     n = H.shape[0]
@@ -26,14 +41,14 @@ def projection_matrices(H: np.ndarray) -> dict[str, np.ndarray]:
 def full_solution(H: np.ndarray, Z: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """Compute the all-in-view least-squares solution as in Section 3."""
     K = np.linalg.inv(H.T @ H) @ H.T
-    X_hat = Z @ K.T
+    X_hat = finite_matmul(Z, K.T, "all-in-view solution")
     return X_hat, K
 
 
 def residual_detector(H: np.ndarray, Z: np.ndarray) -> dict[str, np.ndarray]:
     """Implement the residual/chi-square detector from the fitted solution."""
     X_hat, K = full_solution(H, Z)
-    Z_fit = X_hat @ H.T
+    Z_fit = finite_matmul(X_hat, H.T, "fitted observations")
     R = Z - Z_fit
     T_R = np.einsum("ij,ij->i", R, R)
     S = np.eye(H.shape[0]) - H @ K
@@ -44,7 +59,7 @@ def parity_detector(H: np.ndarray, Z: np.ndarray) -> dict[str, np.ndarray]:
     """Implement the parity-space detector from an explicit null-space basis."""
     u, _, _ = np.linalg.svd(H, full_matrices=True)
     Q = u[:, H.shape[1] :]
-    Pvec = Z @ Q
+    Pvec = finite_matmul(Z, Q, "parity vector")
     T_P = np.einsum("ij,ij->i", Pvec, Pvec)
     return {"Q": Q, "Pvec": Pvec, "T_P": T_P}
 
@@ -73,8 +88,16 @@ def jackknife_detector(H: np.ndarray, Z: np.ndarray) -> dict[str, np.ndarray]:
 
     for k in range(n):
         K_deleted = deleted_solution_matrix(H, k)
-        X_deleted = Z @ K_deleted.T
-        Z_pred_k = X_deleted @ H[k]
+        X_deleted = finite_matmul(
+            Z,
+            K_deleted.T,
+            f"deleted solution k={k + 1}",
+        )
+        Z_pred_k = finite_matmul(
+            X_deleted,
+            H[k],
+            f"deleted-measurement prediction k={k + 1}",
+        )
         J[:, k] = Z[:, k] - Z_pred_k
 
         P_deleted = H @ K_deleted
@@ -83,7 +106,12 @@ def jackknife_detector(H: np.ndarray, Z: np.ndarray) -> dict[str, np.ndarray]:
         K_deleted_all.append(K_deleted)
 
     J_tilde = J / J_sigma
-    return {"J": J, "J_sigma": J_sigma, "J_tilde": J_tilde, "K_deleted_all": K_deleted_all}
+    return {
+        "J": J,
+        "J_sigma": J_sigma,
+        "J_tilde": J_tilde,
+        "K_deleted_all": K_deleted_all,
+    }
 
 
 def solution_separation_detector(
@@ -101,7 +129,11 @@ def solution_separation_detector(
     delta_all = np.empty((Z.shape[0], n, H.shape[1]))
 
     for k, K_deleted in enumerate(K_deleted_all):
-        X_deleted = Z @ K_deleted.T
+        X_deleted = finite_matmul(
+            Z,
+            K_deleted.T,
+            f"solution-separation deleted solution k={k + 1}",
+        )
         delta = X_hat - X_deleted
         delta_all[:, k, :] = delta
 
